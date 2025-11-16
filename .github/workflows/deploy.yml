@@ -23,7 +23,7 @@ jobs:
 
       # 步驟 3: 安裝 Hexo 依賴套件
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       # 步驟 4: 生成靜態網站
       - name: Generate Static Files
