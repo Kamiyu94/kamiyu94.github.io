@@ -27,7 +27,7 @@ jobs:
 
       # 步驟 4: 生成靜態網站
       - name: Generate Static Files
-        run: hexo generate # 執行 hexo g
+        run: npx hexo generate # 執行 hexo g
 
       # 步驟 5: 部署到 gh-pages 分支
       - name: Deploy to GitHub Pages
