@@ -1,0 +1,41 @@
+name: Deploy Hexo Blog
+
+# 觸發時機：當 'main' 分支有新的 push 時
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # 使用最新的 Ubuntu 虛擬環境
+    steps:
+      # 步驟 1: 取得您的原始碼
+      - name: Checkout Source Code
+        uses: actions/checkout@v4 # 更新到 v4
+      
+      # 步驟 2: 設定 Node.js 環境
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18' # 指定 Node.js 版本
+          cache: 'npm'
+
+      # 步驟 3: 安裝 Hexo 依賴套件
+      - name: Install Dependencies
+        run: npm install
+
+      # 步驟 4: 生成靜態網站
+      - name: Generate Static Files
+        run: hexo generate # 執行 hexo g
+
+      # 步驟 5: 部署到 gh-pages 分支
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public  # 要發佈的資料夾 (Hexo 生成的 public)
+          publish_branch: gh-pages # 發佈到 gh-pages 分支
+          user_name: 'github-actions[bot]' # 提交的 Git 使用者名稱
+          user_email: 'github-actions[bot]@users.noreply.github.com' # 提交的 Git 信箱
+          commit_message: 'ci: Deploy blog updates via GitHub Actions' # 提交訊息
